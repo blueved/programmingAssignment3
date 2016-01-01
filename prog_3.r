@@ -14,12 +14,14 @@ best <- function(state, outcome) {
 		res <- paste('Error in best("',state,'", \"',outcome,'\") : invalid state')
 	}else{
 		## - valid inputs: 
-		
-		
-
-		## Return hospital name in that state with lowest 30-day death
-		res <- "CC"
-		## rate
+		## get the list of hospitals in the state
+		hospitalList <- read[which(read[,7] == state),c(2, 11)]
+		## get the mean value
+		min <- min(hospitalList[,2])
+		## look up the hospital(s)
+		bestHospitals <- hospitalList[which(hospitalList[,2]== min),]
+		## Return first hospital in the list
+		res <- bestHospitals[1,1]
 	}
 	res
 }
@@ -55,13 +57,14 @@ validOutcome<-function(outcome){
 ##################################################################
 ## TESTING
 testBest <- function(){
-	bestRes <- c(	"FORT DUNCAN MEDICAL CENTER",
+	bestRes <- c(	"CYPRESS FAIRBANKS MEDICAL CENTER","FORT DUNCAN MEDICAL CENTER",
 					"JOHNS HOPKINS HOSPITAL, THE",
 					"GREATER BALTIMORE MEDICAL CENTER",
 					"invalid state",
 					"invalid outcome")
 	bestCalc<- c(	best("TX", "heart attack"), 
-					best("MD", "heart attack"), 
+					best("TX", "heart failure"),
+					best("MD", "heart attack"),
 					best("MD", "pneumonia"),
 					best("BB", "heart attack"),
 					best("NY", "hert attack"))
