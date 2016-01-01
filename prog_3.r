@@ -2,6 +2,7 @@
 ## source('prog_3.r')
 ## testBest()
 
+
 best <- function(state, outcome) {
 	## Read outcome data
 	read <- outcomeOfCare()	
