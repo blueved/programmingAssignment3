@@ -29,10 +29,10 @@ rankhospital <- function(state, outcome, num = "best") {
 		sortedData <- availableData[order(as.numeric(availableData[,3])),]
 		rank <- c(1: dim(sortedData)[1])
 		sortedData$rank<-rank
-		last <- nrow(sortedData)
+		totalItem <- nrow(sortedData)
 		
 		if(class(num) == "numeric"){
-			if(num > last){
+			if(num > totalItem){
 				"NA"
 			}else{
 				sortedData[num, 1]
@@ -41,7 +41,7 @@ rankhospital <- function(state, outcome, num = "best") {
 			if (num == "best"){
 				sortedData[1, 1]
 			}else if(num == "worst"){
-				sortedData[last, 1]
+				sortedData[totalItem, 1]
 			}else{
 				message(paste("Don't know this one: ", num))
 			}

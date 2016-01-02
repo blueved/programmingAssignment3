@@ -1,12 +1,13 @@
 ## setwd('~/coursera/repoGIT//rProgramming/ProgrammingAssignment3')
-## source('rankhospital.r')
+## source('rankall.r')
 ## uTest()
 rankall <- function(outcome, num = "best") {
 	## Read outcome data
 	read <- outcomeOfCare()	
 	
 	
-	
+		
+		
 	## Check that outcome are valid
 	if( validOutcome(outcome) == FALSE){
 		## - invalid outcome
@@ -15,14 +16,36 @@ rankall <- function(outcome, num = "best") {
 	## Select the proper colum based on the outcome selected
 	if (outcome == "pneumonia") 			colNum = 23
 	else if( outcome == "heart failure")	colNum = 17
-	else ( outcome == "heart attack")    	colNum = 11
+	else colNum = 11
 	
+
 	hospitalList <- read[,c(2, 7,colNum)]
 	availableData <- hospitalList[which(hospitalList[,3] != "Not Available"),]
 	hlSplit <- split(availableData[,c(1,3)], availableData[,2]) ## split by state
 	
-	lapply( hlSplit, function(hl, rank){
-		hl[order(as.numeric(hl[z,rank])),]
+
+	lapply( hlSplit, function(hl, n=num){
+		totalItem <- nrow(hl)
+		##message(paste("total item:", totalItem, " and n = ", n))
+		if(class(n) == "numeric"){
+			
+		} else{
+			if (n == "best"){
+				n = 1
+			}else if(n == "worst"){
+				n = totalItem
+			}
+		}
+	
+		if (n > totalItem) "NA"
+		else{
+			rank <- c(1: totalItem)			
+			hl$rank<-rank
+			hl[order(as.numeric(hl[,3])),]
+			
+			hl[n,1]
+		}
+		
 	})
 	
 	## Return a data frame with the hospital names and the
