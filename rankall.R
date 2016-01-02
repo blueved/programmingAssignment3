@@ -1,7 +1,7 @@
 ## setwd('~/coursera/repoGIT//rProgramming/ProgrammingAssignment3')
 ## source('rankall.r')
 ## uTest()
-rankall <- function(outcome, num = "best") {
+rankall <- function(outcome, rang = "best") {
 	## Read outcome data
 	read <- outcomeOfCare()	
 	
@@ -21,33 +21,35 @@ rankall <- function(outcome, num = "best") {
 
 	hospitalList <- read[,c(2, 7,colNum)]
 	availableData <- hospitalList[which(hospitalList[,3] != "Not Available"),]
-	hlSplit <- split(availableData[,c(1,3)], availableData[,2]) ## split by state
+	hlSplit <- split(availableData[,c(1,3, 2)], availableData[,2])   ## split by state
 	
-
-	lapply( hlSplit, function(hl, n=num){
-		totalItem <- nrow(hl)
-		##message(paste("total item:", totalItem, " and n = ", n))
-		if(class(n) == "numeric"){
+	res <- data.frame( "hospital" = character(), "state" = character(), stringsAsFactors=FALSE)
+	lapply( hlSplit, function(state_list, r = rang, result = res){
+		totalItem <- nrow(state_list)
+		if(class(r) == "numeric"){
 			
 		} else{
-			if (n == "best"){
-				n = 1
-			}else if(n == "worst"){
-				n = totalItem
+			if (r == "best"){
+				r = 1
+			}else if(r == "worst"){
+				r = totalItem
 			}
 		}
-	
-		if (n > totalItem) "NA"
-		else{
-			rank <- c(1: totalItem)			
-			hl$rank<-rank
-			hl[order(as.numeric(hl[,3])),]
-			
-			hl[n,1]
+
+		if (r > totalItem)  {
+			result[ nrow(result)+1, ] <- c("<NA>",  state_list[1,3])
+		} else {
+			#rank <- c(1: totalItem)			
+			#hl$rank<-rank
+			state_ordered<-state_list[order(as.numeric(state_list[,2]), state_list[,1]),]
+			result[nrow(result)+1, ] <- c(state_ordered[r,1], state_ordered[r,3])
 		}
 		
+		res <<- result
 	})
+	res
 	
+
 	## Return a data frame with the hospital names and the
 	## (abbreviated) state name
 }
@@ -56,7 +58,26 @@ rankall <- function(outcome, num = "best") {
 ######################################################################
 # UNIT TEST
 uTest <- function(){
-	
+	message('*** head(rankall("heart attack", 20), 10)')
+	print(head(rankall("heart attack", 20), 10))
+	aa <- data.frame(
+		c("AK", "<NA>","AK"),
+		c("AL","D W MCMILLAN MEMORIAL HOSPITAL","AL"),
+		c("AR", "ARKANSAS METHODIST MEDICAL CENTER","AR"),
+		c("AZ", "JOHN C LINCOLN DEER VALLEY HOSPITAL","AZ"),
+		c("CA", "SHERMAN OAKS HOSPITAL","CA"),
+		c("CT", "MIDSTATE MEDICAL CENTER","CT"),
+		c("DC", "<NA> ","CD"),
+		c("DE", "<NA>","AR"),
+		c("FL", "SOUTH FLORIDA BAPTIST HOSPITAL FL","FL"))
+	aa.colnames <- c("x",'y','z')
+	message(aa)
+	message ("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")	
+	message('*** tail(rankall("pneumonia", "worst"), 3)')
+	tail(rankall("pneumonia", "worst"), 3)
+	message ("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")	
+	message('*** tail(rankall("heart failure"), 10)')
+	tail(rankall("heart failure"), 10)
 
 }
 
