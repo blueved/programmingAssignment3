@@ -26,9 +26,9 @@ rankhospital <- function(state, outcome, num = "best") {
 		## get the list of hospitals in the state
 		hospitalList <- read[which(read[,7] == state),c(2, 7,colNum)]
 		availableData <- hospitalList[which(hospitalList[,3] != "Not Available"),]
-		sortedData <- availableData[order(as.numeric(availableData[,3])),]
-		rank <- c(1: dim(sortedData)[1])
-		sortedData$rank<-rank
+		sortedData <- availableData[order(as.numeric(availableData[,3]), availableData[,1]),]
+		## rank <- c(1: dim(sortedData)[1])
+		## sortedData$rank<-rank
 		totalItem <- nrow(sortedData)
 		
 		if(class(num) == "numeric"){
