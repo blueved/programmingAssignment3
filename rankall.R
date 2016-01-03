@@ -5,9 +5,6 @@ rankall <- function(outcome, rang = "best") {
 	## Read outcome data
 	read <- outcomeOfCare()	
 	
-	
-		
-		
 	## Check that outcome are valid
 	if( validOutcome(outcome) == FALSE){
 		## - invalid outcome
@@ -39,43 +36,37 @@ rankall <- function(outcome, rang = "best") {
 		if (r > totalItem)  {
 			result[ nrow(result)+1, ] <- c("<NA>",  state_list[1,3])
 		} else {
-			#rank <- c(1: totalItem)			
-			#hl$rank<-rank
 			state_ordered<-state_list[order(as.numeric(state_list[,2]), state_list[,1]),]
 			result[nrow(result)+1, ] <- c(state_ordered[r,1], state_ordered[r,3])
 		}
-		
 		res <<- result
 	})
 	res
-	
-
-	## Return a data frame with the hospital names and the
-	## (abbreviated) state name
 }
 
 
 ######################################################################
 # UNIT TEST
 uTest <- function(){
+	message ("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 	message('*** head(rankall("heart attack", 20), 10)')
 	print(head(rankall("heart attack", 20), 10))
-	aa <- data.frame(
-		c("AK", "<NA>","AK"),
-		c("AL","D W MCMILLAN MEMORIAL HOSPITAL","AL"),
-		c("AR", "ARKANSAS METHODIST MEDICAL CENTER","AR"),
-		c("AZ", "JOHN C LINCOLN DEER VALLEY HOSPITAL","AZ"),
-		c("CA", "SHERMAN OAKS HOSPITAL","CA"),
-		c("CT", "MIDSTATE MEDICAL CENTER","CT"),
-		c("DC", "<NA> ","CD"),
-		c("DE", "<NA>","AR"),
-		c("FL", "SOUTH FLORIDA BAPTIST HOSPITAL FL","FL"))
-	aa.colnames <- c("x",'y','z')
-	message(aa)
-	message ("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")	
+	
+	a <- c("AK", "<NA>","AK")
+	b <- c("AL","D W MCMILLAN MEMORIAL HOSPITAL","AL")
+	d <- c("AR", "ARKANSAS METHODIST MEDICAL CENTER","AR")
+	e <- c("AZ", "JOHN C LINCOLN DEER VALLEY HOSPITAL","AZ")
+	f <- c("CA", "SHERMAN OAKS HOSPITAL","CA")
+	##aa <- data.frame(a,b,c,d,e,f)
+		c("CT", "MIDSTATE MEDICAL CENTER","CT")
+		c("DC", "<NA> ","CD")
+		c("DE", "<NA>","AR")
+		c("FL", "SOUTH FLORIDA BAPTIST HOSPITAL FL","FL")
+	##aa.colnames <- c("x",'y','z')
+	message ("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")	
 	message('*** tail(rankall("pneumonia", "worst"), 3)')
-	tail(rankall("pneumonia", "worst"), 3)
-	message ("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")	
+	print(tail(rankall("pneumonia", "worst"), 3))
+	message ("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")	
 	message('*** tail(rankall("heart failure"), 10)')
 	tail(rankall("heart failure"), 10)
 
