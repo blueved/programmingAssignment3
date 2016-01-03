@@ -58,10 +58,10 @@ uTest <- function(){
 		rankhospital("TX", "heart failure", 4),
 		rankhospital("MD", "heart attack", "worst"),
 		rankhospital("MN", "heart attack", 5000))
-	## res <- data.frame(expected, calculated)
-	## colnames(res)<-c('Expected', 'Calculated')
-	## res
-	calculated
+	res <- data.frame(expected, calculated)
+	colnames(res)<-c('Expected', 'Calculated')
+	res
+	
 }
 
 ##################################################################
